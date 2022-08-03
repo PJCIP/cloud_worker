@@ -172,42 +172,52 @@ def scrape(ll,ul):
                         else:
                             # st.error("Exception occured "+str(e))
                             print("Some other error "+str(e))
- 
-                row1 = WebDriverWait(driver, 30).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
-                row2 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[2]/td[3]')))
-                row3 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[3]/td[3]')))
-                row4 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[4]/td[3]')))
-                row5 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[5]/td[3]')))
-                row6 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[6]/td[3]')))
-                row7 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[7]/td[3]')))
-                row8 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[8]/td[3]')))
-                    # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong
-                row9 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong')))
-                    # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]
-                row10 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]')))
-                    # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong
-                row11 = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong')))
-                # row1 = WebDriverWait(driver, 10).until(
-                #     EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
-                # print(row1.text)
-                template = {"HIPPS code":hipps,"State":state,"County":county,"row1":row1.text,"row2":row2.text,"row3":row3.text,"row4":row4.text
-                ,"row5":row5.text,"row6":row6.text,"row7":row7.text,"row8":row8.text,"row9":row9.text,"row10":row10.text,"row11":row11.text}
-                # print(template)
-                # template = template[["HIPPS code","State","County","row1","row2","row3","row4","row5","row6","row7","row8","row9","row10","row11"]]
-                data_2022 = data_2022.append(template,ignore_index=True)
-                # print(data_2022)
-                driver.back()
+                try:
+                    row1 = WebDriverWait(driver, 30).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
+                    row2 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[2]/td[3]')))
+                    row3 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[3]/td[3]')))
+                    row4 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[4]/td[3]')))
+                    row5 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[5]/td[3]')))
+                    row6 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[6]/td[3]')))
+                    row7 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[7]/td[3]')))
+                    row8 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[8]/td[3]')))
+                        # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong
+                    row9 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong')))
+                        # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]
+                    row10 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]')))
+                        # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong
+                    row11 = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong')))
+                    # row1 = WebDriverWait(driver, 10).until(
+                    #     EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
+                    # print(row1.text)
+                    template = {"HIPPS code":hipps,"State":state,"County":county,"row1":row1.text,"row2":row2.text,"row3":row3.text,"row4":row4.text
+                    ,"row5":row5.text,"row6":row6.text,"row7":row7.text,"row8":row8.text,"row9":row9.text,"row10":row10.text,"row11":row11.text}
+                    # print(template)
+                    # template = template[["HIPPS code","State","County","row1","row2","row3","row4","row5","row6","row7","row8","row9","row10","row11"]]
+                    data_2022 = data_2022.append(template,ignore_index=True)
+                    # print(data_2022)
+                    driver.back()
+                except:
+
+                    template = {"HIPPS code":hipps,"State":state,"County":county,"row1":"NA","row2":"NA","row3":"NA","row4":"NA"
+                    ,"row5":"NA","row6":"NA","row7":"NA","row8":"NA","row9":"NA","row10":"NA","row11":"NA"}
+                    # print(template)
+                    data_2022 = data_2022.append(template,ignore_index=True)
+                    # print(data_2022)
+                    driver.back()
+                    pass
+                
         # print("{} Hipps ended at {}".format(hipps,time.process_time() - start))
     # print(data_2022)
     data_2022.to_csv("Scraped_2022_{}-{}.csv".format(ll,ul),index=False)
