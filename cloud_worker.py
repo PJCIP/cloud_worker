@@ -23,7 +23,7 @@ from sys import argv
 
 
 def scrape(ll,ul,sstate,data_2022):
-    print("The lower limit is {} and upperlimit is {} the state id is {}. so far data shapee is {}".format(ll,ul,state,data_2022.shape))
+    print("The lower limit is {} and upperlimit is {} the state id is {}. so far data shapee is {}".format(ll,ul,sstate,data_2022.shape))
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--headless")
@@ -109,8 +109,9 @@ def scrape(ll,ul,sstate,data_2022):
         # st.subheader("State Statuscode")
         # state_options=[1,2,3,4,5,6,7,8,9,0]
         for si in tqdm(range(sstate,len(state_options)), desc="State Status"):
-            if si%2 == 0:
-                
+            
+            if si%5 == 0:
+                # global state
                 state = state_dict[si]
                 tot_county = len(county_dict[state])
                 # tot_county
