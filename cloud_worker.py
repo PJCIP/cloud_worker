@@ -30,8 +30,8 @@ def scrape(ll,ul):
     chrome_options.add_argument("--no-sandbox")
     
     path = "./chromedriver.exe"
-    driver = webdriver.Chrome(executable_path=path, chrome_options=chrome_options)
-    # driver = webdriver.Chrome(path)
+    # driver = webdriver.Chrome(executable_path=path, chrome_options=chrome_options)
+    driver = webdriver.Chrome(path)
     data_2022 = pd.DataFrame()
     cs = {1: 30, 2: 68, 3: 76, 4: 16, 5: 59, 6: 65, 7: 9, 8: 2, 9: 4, 10: 68, 11: 160, 12: 6, 13: 100, 14: 45, 15: 102, 16: 93, 17: 106, 18: 121, 19: 65, 20: 15, 21: 25, 22: 17, 23: 84, 24: 88, 25: 116, 26: 83, 27: 57, 28: 101, 29: 54, 30: 94, 31: 11, 32: 22, 33: 34, 34: 18, 35: 63, 36: 89, 37: 78, 38: 37, 39: 68, 40: 79, 41: 6, 42: 47, 43: 67, 44: 96, 45: 255, 46: 30, 47: 134, 48: 15, 49: 40, 50: 73, 51: 56, 52: 24}
     # path = "chromedriver.exe"
