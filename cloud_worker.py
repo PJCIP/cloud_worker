@@ -19,8 +19,8 @@ import json
 from datetime import datetime
 warnings.simplefilter(action='ignore', category=FutureWarning)
 from sys import argv
-import streamlit as st
-from stqdm import stqdm
+
+
 
 def scrape(ll,ul):
     chrome_options = webdriver.ChromeOptions()
@@ -28,8 +28,9 @@ def scrape(ll,ul):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    # path = "./chromedriver.exe"
+    
+    path = "./chromedriver.exe"
+    driver = webdriver.Chrome(executable_path=path, chrome_options=chrome_options)
     # driver = webdriver.Chrome(path)
     data_2022 = pd.DataFrame()
     cs = {1: 30, 2: 68, 3: 76, 4: 16, 5: 59, 6: 65, 7: 9, 8: 2, 9: 4, 10: 68, 11: 160, 12: 6, 13: 100, 14: 45, 15: 102, 16: 93, 17: 106, 18: 121, 19: 65, 20: 15, 21: 25, 22: 17, 23: 84, 24: 88, 25: 116, 26: 83, 27: 57, 28: 101, 29: 54, 30: 94, 31: 11, 32: 22, 33: 34, 34: 18, 35: 63, 36: 89, 37: 78, 38: 37, 39: 68, 40: 79, 41: 6, 42: 47, 43: 67, 44: 96, 45: 255, 46: 30, 47: 134, 48: 15, 49: 40, 50: 73, 51: 56, 52: 24}
@@ -83,17 +84,17 @@ def scrape(ll,ul):
     if ul == 0:
         ul = ul+1
     # st.subheader("Hipps Status:")
-    for hi in stqdm(range(ll,ul+1), desc="HIPPS Status"):
-        perc = int((hi*100)/ul)
-        if perc % 10 == 0:
-                # perc = (si*100)/len(state_options)
-                data_2022.to_csv("Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc),index=False)
-                # print("Exported")
-                msg="Successfully {}% completed and mailed".format(perc)
-                print(msg)
-                filename = "Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc)
-                path = "./Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc)
-                send_mail(filename,path,msg)
+    for hi in tqdm(range(ll,ul+1), desc="HIPPS Status"):
+        # perc = int((hi*100)/ul)
+        # if perc % 10 == 0:
+        #         # perc = (si*100)/len(state_options)
+        #         data_2022.to_csv("Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc),index=False)
+        #         # print("Exported")
+        #         msg="Successfully {}% completed and mailed".format(perc)
+        #         print(msg)
+        #         filename = "Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc)
+        #         path = "./Scraped_2022_{}-{}-{}.csv".format(ll,ul,perc)
+        #         send_mail(filename,path,msg)
             
         start = time.process_time()
         hippscode_selection = WebDriverWait(driver, 10).until(
@@ -102,16 +103,16 @@ def scrape(ll,ul):
         hippscode_box = Select(hippscode_selection)
         hippscode_box.select_by_index(hi)
         hipps = hipps_dict[hi]
-        print("{} Hipps started at {}".format(hipps,start))
+        print("{} Hipps started at {}".format(hipps,datetime.now().strftime("%d/%m/%Y, %H:%M:%S")))
         # len(state_options)
         # st.subheader("State Statuscode")
         # state_options=[1,2,3,4,5,6,7,8,9,0]
-        for si in stqdm(range(1,len(state_options)), desc="State Status"):
+        for si in tqdm(range(1,len(state_options)), desc="State Status"):
             state = state_dict[si]
             tot_county = len(county_dict[state])
             # tot_county
             # st.subheader("County Statuscode")
-            for ci in stqdm(range(1,tot_county), desc="County Status"):
+            for ci in tqdm(range(1,tot_county), desc="County Status"):
                 state_link = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.LINK_TEXT, "You must click here to select by state"))
                 )
@@ -222,7 +223,7 @@ def scrape(ll,ul):
     # print(data_2022)
     data_2022.to_csv("Scraped_2022_{}-{}.csv".format(ll,ul),index=False)
     print("Exported")
-    msg="Successfully completed the whole set and mailed"
+    msg="Successfully completed the whole set by {}".format(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))
     return 500,msg
     # except Exception as e:
     #     msg = "Ended with the exception {}".format(str(e))
@@ -287,17 +288,17 @@ if __name__ == "__main__":
     ul = int(argv[2])
     print(ll,ul)
     res,msg = scrape(ll,ul)
-    if res == 500:
-        filename = "Scraped_2022_{}-{}.csv".format(ll,ul)
-        path = "./Scraped_2022_{}-{}.csv".format(ll,ul)
-        send_mail(filename,path,msg)
-        # placeholder.button('Scrape', disabled=False, key='3')
+    # if res == 500:
+    #     filename = "Scraped_2022_{}-{}.csv".format(ll,ul)
+    #     path = "./Scraped_2022_{}-{}.csv".format(ll,ul)
+    #     send_mail(filename,path,msg)
+    #     # placeholder.button('Scrape', disabled=False, key='3')
         
-    if res == 400:
-        filename = "Scraped_2022_{}-{}_test.csv".format(ll,ul)
-        path = "./Scraped_2022_{}-{}_test.csv".format(ll,ul)
-        # st.error("Exception occured")
-        send_mail(filename,path,msg)
+    # if res == 400:
+    #     filename = "Scraped_2022_{}-{}_test.csv".format(ll,ul)
+    #     path = "./Scraped_2022_{}-{}_test.csv".format(ll,ul)
+    #     # st.error("Exception occured")
+    #     send_mail(filename,path,msg)
         
 
 
