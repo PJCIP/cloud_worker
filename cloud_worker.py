@@ -22,7 +22,8 @@ from sys import argv
 
 
 
-def scrape(ll,ul):
+def scrape(ll,ul,sstate,data_2022):
+    print("The lower limit is {} and upperlimit is {} the state id is {}. so far data shapee is {}".format(ll,ul,state,data_2022.shape))
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--headless")
@@ -32,7 +33,7 @@ def scrape(ll,ul):
     path = "./chromedriver.exe"
     # driver = webdriver.Chrome(executable_path=path, chrome_options=chrome_options)
     driver = webdriver.Chrome(path)
-    data_2022 = pd.DataFrame()
+    
     cs = {1: 30, 2: 68, 3: 76, 4: 16, 5: 59, 6: 65, 7: 9, 8: 2, 9: 4, 10: 68, 11: 160, 12: 6, 13: 100, 14: 45, 15: 102, 16: 93, 17: 106, 18: 121, 19: 65, 20: 15, 21: 25, 22: 17, 23: 84, 24: 88, 25: 116, 26: 83, 27: 57, 28: 101, 29: 54, 30: 94, 31: 11, 32: 22, 33: 34, 34: 18, 35: 63, 36: 89, 37: 78, 38: 37, 39: 68, 40: 79, 41: 6, 42: 47, 43: 67, 44: 96, 45: 255, 46: 30, 47: 134, 48: 15, 49: 40, 50: 73, 51: 56, 52: 24}
     # path = "chromedriver.exe"
     global hipps
@@ -107,8 +108,123 @@ def scrape(ll,ul):
         # len(state_options)
         # st.subheader("State Statuscode")
         # state_options=[1,2,3,4,5,6,7,8,9,0]
-        for si in tqdm(range(1,len(state_options)), desc="State Status"):
-            state = state_dict[si]
+        for si in tqdm(range(sstate,len(state_options)), desc="State Status"):
+            if si%2 == 0:
+                
+                state = state_dict[si]
+                tot_county = len(county_dict[state])
+                # tot_county
+                # st.subheader("County Statuscode")
+                for ci in tqdm(range(1,tot_county), desc="County Status"):
+                    state_link = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.LINK_TEXT, "You must click here to select by state"))
+                    )
+                    state_link.click()
+                    window_after = driver.window_handles[1]
+                    driver.switch_to.window(window_after)
+                    
+                    state_select = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.NAME, "StateSelect"))
+                    )
+                    state_box = Select(state_select)
+                    # 1 - 4
+                    state_box.select_by_index(si)
+                    state = state_dict[si]
+                    # print(state)
+                    # print(state_box.first_selected_option.text)
+                    county_select = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.NAME, "CountySelect"))
+                    )
+                    county_box = Select(county_select)
+                    county_box.select_by_index(ci)
+                    # county_options = [x.text for x in county_box.options]
+                    # county_dict = dict(zip(list(range(1,len(county_options)+1)),county_options))
+                    global county
+                    county = county_dict[state][str(ci)]
+                    # print(county)
+                    # print(county_box.first_selected_option.text)
+                    apply_button = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CLASS_NAME, "button"))
+                    )
+                    apply_button.click()
+                    driver.switch_to.window(window_before)
+
+                    raplate_box = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.NAME, "RAPLateDays"))
+
+                    )
+                    raplate_box.clear()
+                    raplate_box.send_keys("0")
+
+                    flag = True
+                    while flag:
+                        try:
+                            element = driver.find_element_by_xpath('//*[@id="wrappersmapp"]/div[3]/span/center/table/tbody/tr/td/span/a')
+                        
+                            if element.is_displayed():
+                                # print("conitnue not yet clicked")
+                                continue1_button = WebDriverWait(driver, 10).until(
+                                EC.presence_of_element_located((By.CLASS_NAME, "button"))
+                                )
+                                continue1_button.click()
+                                flag = True
+                                
+                        except Exception as e:
+                            # print(e)
+                            if "no such element" in str(e):
+                                flag = False
+                            else:
+                                # st.error("Exception occured "+str(e))
+                                print("Some other error "+str(e))
+                    try:
+                        row1 = WebDriverWait(driver, 30).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
+                        row2 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[2]/td[3]')))
+                        row3 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[3]/td[3]')))
+                        row4 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[4]/td[3]')))
+                        row5 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[5]/td[3]')))
+                        row6 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[6]/td[3]')))
+                        row7 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[7]/td[3]')))
+                        row8 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[8]/td[3]')))
+                            # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong
+                        row9 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[9]/td[3]/strong')))
+                            # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]
+                        row10 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[10]/td[3]')))
+                            # //*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong
+                        row11 = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[11]/td[3]/strong')))
+                        # row1 = WebDriverWait(driver, 10).until(
+                        #     EC.presence_of_element_located((By.XPATH, '//*[@id="wrapperapp"]/div[3]/table[2]/tbody/tr[1]/td[3]')))
+                        # print(row1.text)
+                        template = {"HIPPS code":hipps,"State":state,"County":county,"row1":row1.text,"row2":row2.text,"row3":row3.text,"row4":row4.text
+                        ,"row5":row5.text,"row6":row6.text,"row7":row7.text,"row8":row8.text,"row9":row9.text,"row10":row10.text,"row11":row11.text}
+                        # print(template)
+                        # template = template[["HIPPS code","State","County","row1","row2","row3","row4","row5","row6","row7","row8","row9","row10","row11"]]
+                        data_2022 = data_2022.append(template,ignore_index=True)
+                        # print(data_2022)
+                        driver.back()
+                    except:
+
+                        template = {"HIPPS code":hipps,"State":state,"County":county,"row1":"NA","row2":"NA","row3":"NA","row4":"NA"
+                        ,"row5":"NA","row6":"NA","row7":"NA","row8":"NA","row9":"NA","row10":"NA","row11":"NA"}
+                        # print(template)
+                        data_2022 = data_2022.append(template,ignore_index=True)
+                        # print(data_2022)
+                        driver.back()
+                        pass
+                driver.quit()
+                scrape(hi,ul,si,data_2022)
+            else:
+                state = state_dict[si]
             tot_county = len(county_dict[state])
             # tot_county
             # st.subheader("County Statuscode")
@@ -136,7 +252,7 @@ def scrape(ll,ul):
                 county_box.select_by_index(ci)
                 # county_options = [x.text for x in county_box.options]
                 # county_dict = dict(zip(list(range(1,len(county_options)+1)),county_options))
-                global county
+                #   global county
                 county = county_dict[state][str(ci)]
                 # print(county)
                 # print(county_box.first_selected_option.text)
@@ -286,8 +402,10 @@ def send_mail(filename,path,msg):
 if __name__ == "__main__":
     ll = int(argv[1])
     ul = int(argv[2])
+    sstate = 1
+    data_2022 = pd.DataFrame()
     print(ll,ul)
-    res,msg = scrape(ll,ul)
+    res,msg = scrape(ll,ul,sstate,data_2022)
     # if res == 500:
     #     filename = "Scraped_2022_{}-{}.csv".format(ll,ul)
     #     path = "./Scraped_2022_{}-{}.csv".format(ll,ul)
